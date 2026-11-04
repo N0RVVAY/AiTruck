@@ -67,22 +67,15 @@
         <h2 id="what-title">把想法，做出来。</h2>
       </div>
       <div class="service-list">
-        <article class="service-row reveal">
-          <h3>文字与内容</h3>
-          <p>文案 · 文章 · 品牌表达</p>
-          <span class="service-arrow" aria-hidden="true">↗</span>
-        </article>
-        <article class="service-row reveal">
-          <h3>视觉与图文</h3>
-          <p>海报 · 图片 · 版面设计</p>
-          <span class="service-arrow" aria-hidden="true">↗</span>
-        </article>
-        <article class="service-row reveal">
-          <h3>教学与课件</h3>
-          <p>教学设计 · PPT · 微课</p>
-          <span class="service-arrow" aria-hidden="true">↗</span>
-        </article>
+        <a class="service-tile reveal" href="#writing" aria-label="查看文字与内容模板"><span class="tile-orbit" aria-hidden="true"></span><h3>文字与内容</h3><span class="tile-arrow" aria-hidden="true">↗</span></a>
+        <a class="service-tile reveal" href="#work" aria-label="查看视觉与图文作品"><span class="tile-prism" aria-hidden="true"></span><h3>视觉与图文</h3><span class="tile-arrow" aria-hidden="true">↗</span></a>
+        <a class="service-tile reveal" href="#education" aria-label="查看教学与课件模板"><span class="tile-pages" aria-hidden="true"></span><h3>教学与课件</h3><span class="tile-arrow" aria-hidden="true">↗</span></a>
       </div>
+    </section>
+
+    <section class="writing chapter" id="writing" aria-labelledby="writing-title">
+      <div class="writing-copy reveal"><h2 id="writing-title">一句话，也可以<br>有很长的回声。</h2></div>
+      <div class="writing-display reveal-media" aria-label="文字内容创作方向"><span>品牌表达</span><span>文章润色</span><span>演讲文稿</span><span>课程脚本</span></div>
     </section>
 
     <section class="feature chapter" aria-labelledby="feature-title">
@@ -90,23 +83,48 @@
         <h2 id="feature-title">让第一眼，<br>停留久一点。</h2>
       </div>
       <div class="feature-images">
-        <img class="feature-back reveal-media" src="media/portrait-art.webp" alt="职业头像整理作品画面" loading="lazy">
-        <img class="feature-front reveal-media" src="media/layers-art.webp" alt="《里层》作品画面" loading="lazy">
+        <img class="feature-solo reveal-media" src="media/layers-art.webp" alt="《里层》的蓝白空间构图" loading="lazy">
       </div>
     </section>
 
     <section class="work chapter" id="work" aria-labelledby="work-title">
       <div class="chapter-heading reveal">
-        <h2 id="work-title">作品，比介绍更诚实。</h2>
+        <h2 id="work-title">看过，再决定。</h2>
       </div>
-      <div class="gallery" aria-label="爱创艺作品选">
+      <div class="gallery" aria-label="爱创艺作品选，滚轮或点击可切换">
         <figure><img src="media/sea-page.webp" alt="《海的一页》创意海报" loading="lazy"><figcaption>把海，折进这一页。</figcaption></figure>
         <figure><img src="media/entry.webp" alt="《入口》创意海报" loading="lazy"><figcaption>留白，也是入口。</figcaption></figure>
         <figure><img src="media/woven.webp" alt="《编在一起》创意海报" loading="lazy"><figcaption>把不同，编在一起。</figcaption></figure>
         <figure><img src="media/complete.webp" alt="《完整》创意海报" loading="lazy"><figcaption>合在一起，才完整。</figcaption></figure>
         <figure><img src="media/linked.webp" alt="《相连》创意海报" loading="lazy"><figcaption>看似分开，始终相连。</figcaption></figure>
         <figure><img src="media/endless.webp" alt="《未止》创意海报" loading="lazy"><figcaption>不止于此。</figcaption></figure>
+        <figure><img src="media/parallel.webp" alt="《平行异读》设计作品" loading="lazy"><figcaption>平行异读。</figcaption></figure>
+        <figure><img src="media/scale.webp" alt="《尺度之外》设计作品" loading="lazy"><figcaption>尺度之外。</figcaption></figure>
+        <figure><img src="media/fold-light.webp" alt="《折叠一束光》设计作品" loading="lazy"><figcaption>折叠一束光。</figcaption></figure>
+        <figure><img src="media/paper-grow.webp" alt="《纸上生长》设计作品" loading="lazy"><figcaption>纸上生长。</figcaption></figure>
+        <figure><img src="media/light-turn.webp" alt="《光的转弯》设计作品" loading="lazy"><figcaption>光的转弯。</figcaption></figure>
+        <figure><img src="media/look-again.webp" alt="《再看一次》设计作品" loading="lazy"><figcaption>再看一次。</figcaption></figure>
       </div>
+    </section>
+
+    <section class="dial chapter" id="dial" aria-labelledby="dial-title">
+      <h2 id="dial-title" class="reveal">再转半圈。<br>又是另一种看法。</h2>
+      <div class="dial-stage" aria-label="转盘作品选择">
+        <button class="dial-nav dial-prev" type="button" aria-label="上一个作品">←</button>
+        <div class="dial-wheel">
+          <button type="button" aria-label="查看《海的一页》"><img src="media/sea-full.webp" alt=""></button>
+          <button type="button" aria-label="查看《编在一起》"><img src="media/woven-full.webp" alt=""></button>
+          <button type="button" aria-label="查看《入口》"><img src="media/entry-full.webp" alt=""></button>
+          <button type="button" aria-label="查看《完整》"><img src="media/complete-full.webp" alt=""></button>
+          <button type="button" aria-label="查看《相连》"><img src="media/linked-full.webp" alt=""></button>
+        </div>
+        <button class="dial-nav dial-next" type="button" aria-label="下一个作品">→</button>
+      </div>
+    </section>
+
+    <section class="education chapter" id="education" aria-labelledby="education-title">
+      <div class="education-copy reveal"><h2 id="education-title">把难讲的，<br>讲得想听。</h2></div>
+      <div class="education-visual reveal-media" aria-label="课件与微课设计示意"><div class="lesson-page"><span>01</span><strong>先有问题。<br>再有答案。</strong></div><div class="lesson-page"><span>02</span><strong>把知识，<br>讲成画面。</strong></div><div class="lesson-page"><span>03</span><strong>让下一页，<br>值得期待。</strong></div></div>
     </section>
 
     <section class="retouch chapter" aria-labelledby="retouch-title">
@@ -119,12 +137,13 @@
       </div>
     </section>
 
+    <section class="photo-strip chapter" aria-label="照片与视觉作品"><img src="media/product.webp" alt="商品图整理作品" loading="lazy"><img src="media/still-life.webp" alt="静物照片美化作品" loading="lazy"><img src="media/pet.webp" alt="宠物照片美化作品" loading="lazy"><img src="media/flower.webp" alt="静物照片调色作品" loading="lazy"></section>
+
     <section class="contact chapter" id="contact" aria-labelledby="contact-title">
       <div class="contact-glow" aria-hidden="true"></div>
       <div class="contact-inner reveal">
         <h2 id="contact-title">你的想法，<br>轮到它出场了。</h2>
-        <p>从你找到我们的地方，给爱创艺发来一句话。</p>
-        <img src="logo-solid.png" alt="爱创艺">
+        <div class="contact-logo"><img src="logo-solid.png" alt="爱创艺"><span aria-hidden="true"></span></div>
       </div>
     </section>
   </main>
@@ -132,4 +151,3 @@
   <script src="site.js" defer></script>
 </body>
 </html>
-
