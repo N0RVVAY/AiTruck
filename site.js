@@ -21,7 +21,7 @@ const revealObserver = new IntersectionObserver(entries => {
       entry.target.classList.add('is-visible');
     } else entry.target.classList.remove('is-visible');
   });
-}, {threshold:.12, rootMargin:'0px 0px -4% 0px'});
+}, {threshold:.3, rootMargin:'0px 0px -10% 0px'});
 document.querySelectorAll('.reveal,.reveal-media').forEach(el => revealObserver.observe(el));
 
 const films = document.querySelectorAll('.motion-film');
@@ -41,14 +41,11 @@ reducedMotion.addEventListener('change', () => {
 const gallery = document.querySelector('.gallery');
 const originals = [...gallery.querySelectorAll('figure')];
 const count = originals.length;
-originals.forEach(card => gallery.append(card.cloneNode(true)));
-originals.slice().reverse().forEach(card => gallery.prepend(card.cloneNode(true)));
 const cards = [...gallery.querySelectorAll('figure')];
-let activeCard = count;
+let activeCard = 0;
 let galleryVisible = false;
 let galleryTimer;
 let manualUntil = 0;
-let wrapTimer;
 function centerCard(index, smooth = true) {
   activeCard = index;
   const card = cards[index];
@@ -60,12 +57,7 @@ function centerCard(index, smooth = true) {
   gallery.scrollTo({left, behavior:smooth && !reducedMotion.matches ? 'smooth' : 'instant'});
 }
 function stepGallery(direction) {
-  clearTimeout(wrapTimer);
-  const next = activeCard + direction;
-  centerCard(next);
-  if (next >= count * 2 || next < count) {
-    wrapTimer = setTimeout(() => centerCard(next >= count * 2 ? count : count * 2 - 1, false), reducedMotion.matches ? 30 : 850);
-  }
+  centerCard((activeCard + direction + count) % count);
 }
 function startGallery() {
   clearInterval(galleryTimer);
@@ -103,11 +95,13 @@ const galleryObserver = new IntersectionObserver(entries => {
 }, {threshold:.2});
 galleryObserver.observe(gallery);
 reducedMotion.addEventListener('change', startGallery);
-requestAnimationFrame(() => centerCard(count, false));
+requestAnimationFrame(() => centerCard(0, false));
 
 const dial = document.querySelector('.dial');
 const dialCards = [...dial.querySelectorAll('.dial-wheel button')];
 let dialIndex = 0;
+let dialTimer;
+let dialManualUntil = 0;
 function renderDial() {
   const narrow = innerWidth < 600;
   const radius = narrow ? 150 : Math.min(385, innerWidth * .28);
@@ -125,12 +119,76 @@ function renderDial() {
     card.setAttribute('aria-pressed', String(distance === 0));
   });
 }
-dial.querySelector('.dial-prev').addEventListener('click', () => {dialIndex=(dialIndex-1+dialCards.length)%dialCards.length;renderDial()});
-dial.querySelector('.dial-next').addEventListener('click', () => {dialIndex=(dialIndex+1)%dialCards.length;renderDial()});
-dialCards.forEach((card,index) => card.addEventListener('click', () => {dialIndex=index;renderDial()}));
-dial.addEventListener('wheel', event => {event.preventDefault();if(Date.now()-dial.lastWheel<500)return;dial.lastWheel=Date.now();dialIndex=(dialIndex+(event.deltaY>0?1:-1)+dialCards.length)%dialCards.length;renderDial()}, {passive:false});
+dial.querySelector('.dial-prev').addEventListener('click', () => {dialManualUntil=Date.now()+9000;dialIndex=(dialIndex-1+dialCards.length)%dialCards.length;renderDial()});
+dial.querySelector('.dial-next').addEventListener('click', () => {dialManualUntil=Date.now()+9000;dialIndex=(dialIndex+1)%dialCards.length;renderDial()});
+dialCards.forEach((card,index) => card.addEventListener('click', () => {dialManualUntil=Date.now()+9000;dialIndex=index;renderDial()}));
+dial.querySelector('.dial-stage').addEventListener('wheel', event => {event.preventDefault();if(Date.now()-dial.lastWheel<500)return;dial.lastWheel=Date.now();dialManualUntil=Date.now()+9000;dialIndex=(dialIndex+(event.deltaY>0?1:-1)+dialCards.length)%dialCards.length;renderDial()}, {passive:false});
+new IntersectionObserver(entries => {
+  clearInterval(dialTimer);
+  if (entries[0].isIntersecting && !reducedMotion.matches) {
+    dialTimer=setInterval(() => {
+      if (document.hidden || Date.now()<dialManualUntil) return;
+      dialIndex=(dialIndex+1)%dialCards.length;
+      renderDial();
+    },3600);
+  }
+},{threshold:.45}).observe(dial);
 addEventListener('resize', renderDial, {passive:true});
 renderDial();
+
+const lesson = document.querySelector('.education');
+const lessonPages = [...lesson.querySelectorAll('.lesson-page')];
+let lessonIndex = 0, lessonTimer;
+function showLesson(index) {
+  lessonIndex = (index + lessonPages.length) % lessonPages.length;
+  lessonPages.forEach((page, i) => {
+    const distance = (i - lessonIndex + lessonPages.length) % lessonPages.length;
+    page.classList.toggle('is-active', i === lessonIndex);
+    page.style.setProperty('--lesson-x', distance === 0 ? '0px' : distance === 1 ? '24%' : '-24%');
+    page.style.setProperty('--lesson-r', distance === 0 ? '0deg' : distance === 1 ? '9deg' : '-9deg');
+    page.style.zIndex = String(distance === 0 ? 3 : distance === 1 ? 2 : 1);
+    page.setAttribute('aria-pressed', String(i === lessonIndex));
+  });
+}
+lessonPages.forEach((page,i) => page.addEventListener('click', () => {showLesson(i);clearInterval(lessonTimer);lessonTimer=setInterval(()=>showLesson(lessonIndex+1),3400)}));
+new IntersectionObserver(entries => {
+  clearInterval(lessonTimer);
+  if(entries[0].isIntersecting && !reducedMotion.matches) lessonTimer=setInterval(()=>showLesson(lessonIndex+1),3400);
+}, {threshold:.55}).observe(lesson);
+showLesson(0);
+
+const retouch = document.querySelector('.retouch');
+const photoCards = [...retouch.querySelectorAll('.photo-card')];
+let photoIndex = 0, photoTimer;
+function showPhoto(index) {
+  photoIndex = (index + photoCards.length) % photoCards.length;
+  photoCards.forEach((card,i) => {
+    const d=(i-photoIndex+photoCards.length)%photoCards.length;
+    card.classList.toggle('is-active',d===0);
+    card.style.setProperty('--card-x',`${Math.min(d,3)*18}px`);
+    card.style.setProperty('--card-y',`${Math.min(d,3)*-14}px`);
+    card.style.setProperty('--card-r',`${Math.min(d,3)*4-3}deg`);
+    card.style.zIndex=String(photoCards.length-d);
+    card.style.opacity=d>3?'0':'1';
+    card.setAttribute('aria-pressed',String(d===0));
+  });
+}
+photoCards.forEach((card,i)=>card.addEventListener('click',()=>{showPhoto(i===photoIndex?photoIndex+1:i);clearInterval(photoTimer);photoTimer=setInterval(()=>showPhoto(photoIndex+1),4100)}));
+new IntersectionObserver(entries=>{
+  clearInterval(photoTimer);
+  if(entries[0].isIntersecting&&!reducedMotion.matches)photoTimer=setInterval(()=>showPhoto(photoIndex+1),4100);
+},{threshold:.5}).observe(retouch);
+showPhoto(0);
+
+const photoTrack = document.querySelector('.photo-track');
+if (photoTrack) {
+  [...photoTrack.children].forEach(photo => {
+    const copy = photo.cloneNode(true);
+    copy.setAttribute('aria-hidden', 'true');
+    copy.alt = '';
+    photoTrack.appendChild(copy);
+  });
+}
 
 if (!reducedMotion.matches && matchMedia('(hover:hover) and (pointer:fine)').matches) {
   const art = document.querySelector('.hero-art');
