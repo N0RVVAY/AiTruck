@@ -332,7 +332,7 @@ img[src="logo-gemini-inspired.png"]{mask-image:url("logo-tail-cut.svg");mask-siz
 .portal-core img{object-fit:contain;object-position:center;animation:portalScenes 30s linear infinite}
 @keyframes portalCoreFall{to{transform:translateY(13px) scale(1.025)}}
 .photo-strip{background:#fff}
-.photo-track{padding:0;gap:24px;min-height:100svh;animation:smileLoop 80s linear infinite reverse}
+.photo-track{padding:0;gap:24px;min-height:100svh;animation:smileLoop 70s linear infinite}
 .photo-track img{width:clamp(270px,24vw,390px);height:min(67vh,590px);object-fit:cover;border-radius:3px;background:#f1f4f8;box-shadow:0 20px 42px #132d5c24;animation:none}
 .photo-strip:hover .photo-track{animation-play-state:running}
 @keyframes smileLoop{to{transform:translateX(calc(-50% - 12px))}}
