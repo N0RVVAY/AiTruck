@@ -339,3 +339,15 @@ img[src="logo-gemini-inspired.png"]{mask-image:url("logo-tail-cut.svg");mask-siz
 @media(max-width:900px){.feature-images{min-height:570px}}
 @media(max-width:600px){.feature-images{min-height:380px}.feature-portal{width:min(95vw,470px)}.photo-track img{width:68vw;height:62vh}}
 @media(prefers-reduced-motion:reduce){.portal-frame,.portal-core,.photo-track{animation:none!important}.portal-frame-a,.portal-frame-b,.portal-frame-c{opacity:1;transform:translate(-50%,-50%) scale(.85)}.portal-frame-b{transform:translate(-50%,-50%) scale(.65)}.portal-frame-c{transform:translate(-50%,-50%) scale(.45)}}
+
+/* Anchor the cover mark to the mobile content width and keep it clear of the headline. */
+@media(max-width:600px){
+  .hero-art{
+    left:50%;right:auto;
+    top:clamp(450px,58svh,540px);
+    width:min(92%,420px);
+    transform:translate3d(calc(-50% + var(--px,0px)),var(--py,0px),0);
+    opacity:1;
+  }
+}
+
