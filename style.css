@@ -346,7 +346,7 @@ img[src="logo-gemini-inspired.png"]{mask-image:url("logo-tail-cut.svg");mask-siz
     left:50%;right:auto;
     top:clamp(450px,58svh,540px);
     width:min(92%,420px);
-    transform:translate3d(calc(-50% + var(--px,0px)),var(--py,0px),0);
+    transform:translate3d(-50%,0,0);
     opacity:1;
   }
 }
