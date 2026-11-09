@@ -343,7 +343,7 @@ img[src="logo-gemini-inspired.png"]{mask-image:url("logo-tail-cut.svg");mask-siz
 /* Anchor the cover mark to the mobile content width and keep it clear of the headline. */
 @media(max-width:600px){
   .hero-art{
-    left:50%;right:auto;
+    left:37%;right:auto;
     top:clamp(450px,58svh,540px);
     width:min(92%,420px);
     transform:translate3d(-50%,0,0);
