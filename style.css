@@ -339,6 +339,14 @@ img[src="logo-gemini-inspired.png"]{mask-image:url("logo-tail-cut.svg");mask-siz
 @media(max-width:900px){.feature-images{min-height:570px}}
 @media(max-width:600px){.feature-images{min-height:380px}.feature-portal{width:min(95vw,470px)}.photo-track img{width:68vw;height:62vh}}
 @media(prefers-reduced-motion:reduce){.portal-frame,.portal-core,.photo-track{animation:none!important}.portal-frame-a,.portal-frame-b,.portal-frame-c{opacity:1;transform:translate(-50%,-50%) scale(.85)}.portal-frame-b{transform:translate(-50%,-50%) scale(.65)}.portal-frame-c{transform:translate(-50%,-50%) scale(.45)}}
+.photo-track-reverse{display:none}
+@media(max-width:600px){
+  .dial-stage{touch-action:pan-y}
+  .photo-strip{display:flex;flex-direction:column;justify-content:center;min-height:100svh}
+  .photo-track,.photo-track-reverse{display:flex;height:50svh;min-height:0;gap:18px;animation-duration:58s}
+  .photo-track-reverse{animation-direction:reverse}
+  .photo-track img{width:42vw;height:37svh;flex:none}
+}
 
 /* Anchor the cover mark to the mobile content width and keep it clear of the headline. */
 @media(max-width:600px){
@@ -350,4 +358,3 @@ img[src="logo-gemini-inspired.png"]{mask-image:url("logo-tail-cut.svg");mask-siz
     opacity:1;
   }
 }
-
