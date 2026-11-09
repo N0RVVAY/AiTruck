@@ -123,6 +123,29 @@ dial.querySelector('.dial-prev').addEventListener('click', () => {dialManualUnti
 dial.querySelector('.dial-next').addEventListener('click', () => {dialManualUntil=Date.now()+9000;dialIndex=(dialIndex+1)%dialCards.length;renderDial()});
 dialCards.forEach((card,index) => card.addEventListener('click', () => {dialManualUntil=Date.now()+9000;dialIndex=index;renderDial()}));
 dial.querySelector('.dial-stage').addEventListener('wheel', event => {event.preventDefault();if(Date.now()-dial.lastWheel<500)return;dial.lastWheel=Date.now();dialManualUntil=Date.now()+9000;dialIndex=(dialIndex+(event.deltaY>0?1:-1)+dialCards.length)%dialCards.length;renderDial()}, {passive:false});
+const dialStage = dial.querySelector('.dial-stage');
+let dialTouchStart = null;
+let dialSwipeAt = 0;
+dialStage.addEventListener('touchstart', event => {
+  if (event.touches.length !== 1) { dialTouchStart = null; return; }
+  dialTouchStart = {x:event.touches[0].clientX, y:event.touches[0].clientY};
+}, {passive:true});
+dialStage.addEventListener('touchend', event => {
+  if (!dialTouchStart || event.changedTouches.length !== 1) return;
+  const dx = event.changedTouches[0].clientX - dialTouchStart.x;
+  const dy = event.changedTouches[0].clientY - dialTouchStart.y;
+  dialTouchStart = null;
+  if (Math.abs(dx) < 28 || Math.abs(dx) < Math.abs(dy) * 1.25) return;
+  dialSwipeAt = Date.now();
+  dialManualUntil = dialSwipeAt + 9000;
+  const steps = Math.min(3, Math.max(1, Math.round(Math.abs(dx) / 115)));
+  dialIndex = (dialIndex + (dx < 0 ? steps : -steps) + dialCards.length) % dialCards.length;
+  renderDial();
+}, {passive:true});
+dialStage.addEventListener('touchcancel', () => { dialTouchStart = null; }, {passive:true});
+dialStage.addEventListener('click', event => {
+  if (Date.now() - dialSwipeAt < 450) { event.preventDefault(); event.stopPropagation(); }
+}, true);
 new IntersectionObserver(entries => {
   clearInterval(dialTimer);
   if (entries[0].isIntersecting && !reducedMotion.matches) {
@@ -180,15 +203,14 @@ new IntersectionObserver(entries=>{
 },{threshold:.5}).observe(retouch);
 showPhoto(0);
 
-const photoTrack = document.querySelector('.photo-track');
-if (photoTrack) {
-  [...photoTrack.children].forEach(photo => {
+document.querySelectorAll('.photo-track').forEach(track => {
+  [...track.children].forEach(photo => {
     const copy = photo.cloneNode(true);
     copy.setAttribute('aria-hidden', 'true');
     copy.alt = '';
-    photoTrack.appendChild(copy);
+    track.appendChild(copy);
   });
-}
+});
 
 if (!reducedMotion.matches && matchMedia('(hover:hover) and (pointer:fine)').matches) {
   const art = document.querySelector('.hero-art');
