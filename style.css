@@ -376,3 +376,13 @@ img[src="logo-gemini-inspired.png"]{mask-image:url("logo-tail-cut.svg");mask-siz
     opacity:1;
   }
 }
+
+/* Keep the cover mark within the unfolded phone's first viewport. */
+@media(min-width:601px) and (max-width:1000px) and (pointer:coarse){
+  .hero-art{top:56%;width:min(55vw,510px)}
+}
+
+/* A shorter settle animation makes the selected work legible immediately. */
+.gallery figure{transition-duration:.38s,.38s,.38s}
+.photo-strip:not(.is-ready) .photo-track{animation-play-state:paused}
+.photo-strip.is-ready .photo-track{animation-play-state:running}
