@@ -83,10 +83,16 @@ function focusNearestGalleryCard() {
   centerCard(nearest.index);
 }
 gallery.addEventListener('touchstart', () => {galleryTouching=true;galleryFingerDown=true;clearTimeout(gallerySnapTimer);manualUntil=Date.now()+8000;}, {passive:true});
-gallery.addEventListener('touchend', () => {galleryFingerDown=false;gallerySnapTimer=setTimeout(focusNearestGalleryCard,180);}, {passive:true});
+gallery.addEventListener('touchend', () => {galleryFingerDown=false;gallerySnapTimer=setTimeout(focusNearestGalleryCard,65);}, {passive:true});
 gallery.addEventListener('touchcancel', () => {galleryTouching=false;galleryFingerDown=false;clearTimeout(gallerySnapTimer);}, {passive:true});
 gallery.addEventListener('scroll', () => {
-  if (galleryTouching && !galleryFingerDown) {clearTimeout(gallerySnapTimer);gallerySnapTimer=setTimeout(focusNearestGalleryCard,180);}
+  if (galleryTouching && !galleryFingerDown) {clearTimeout(gallerySnapTimer);gallerySnapTimer=setTimeout(focusNearestGalleryCard,65);}
+}, {passive:true});
+gallery.addEventListener('scrollend', () => {
+  if (galleryTouching && !galleryFingerDown) {
+    clearTimeout(gallerySnapTimer);
+    focusNearestGalleryCard();
+  }
 }, {passive:true});
 gallery.addEventListener('focusin', () => {manualUntil = Date.now() + 8000;});
 gallery.addEventListener('click', event => {
@@ -223,14 +229,20 @@ new IntersectionObserver(entries=>{
 },{threshold:.5}).observe(retouch);
 showPhoto(0);
 
+const portraitSources = [...document.querySelectorAll('.photo-track img')];
 document.querySelectorAll('.photo-track').forEach(track => {
   [...track.children].forEach(photo => {
     const copy = photo.cloneNode(true);
     copy.setAttribute('aria-hidden', 'true');
     copy.alt = '';
+    copy.loading = 'eager';
     track.appendChild(copy);
   });
 });
+Promise.all(portraitSources.map(photo => photo.decode ? photo.decode().catch(() => {}) : new Promise(resolve => {
+  if (photo.complete) resolve();
+  else { photo.addEventListener('load', resolve, {once:true}); photo.addEventListener('error', resolve, {once:true}); }
+}))).then(() => document.querySelector('.photo-strip').classList.add('is-ready'));
 
 if (!reducedMotion.matches && matchMedia('(hover:hover) and (pointer:fine)').matches) {
   const art = document.querySelector('.hero-art');
