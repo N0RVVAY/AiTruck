@@ -68,6 +68,26 @@ function startGallery() {
   }, 3600);
 }
 gallery.addEventListener('pointerdown', () => {manualUntil = Date.now() + 8000;}, {passive:true});
+let galleryTouching = false;
+let galleryFingerDown = false;
+let gallerySnapTimer;
+function focusNearestGalleryCard() {
+  if (!galleryTouching) return;
+  galleryTouching = false;
+  const midpoint = gallery.getBoundingClientRect().left + gallery.clientWidth / 2;
+  const nearest = cards.reduce((best, card, index) => {
+    const box = card.getBoundingClientRect();
+    const distance = Math.abs(box.left + box.width / 2 - midpoint);
+    return distance < best.distance ? {index, distance} : best;
+  }, {index:activeCard, distance:Infinity});
+  centerCard(nearest.index);
+}
+gallery.addEventListener('touchstart', () => {galleryTouching=true;galleryFingerDown=true;clearTimeout(gallerySnapTimer);manualUntil=Date.now()+8000;}, {passive:true});
+gallery.addEventListener('touchend', () => {galleryFingerDown=false;gallerySnapTimer=setTimeout(focusNearestGalleryCard,180);}, {passive:true});
+gallery.addEventListener('touchcancel', () => {galleryTouching=false;galleryFingerDown=false;clearTimeout(gallerySnapTimer);}, {passive:true});
+gallery.addEventListener('scroll', () => {
+  if (galleryTouching && !galleryFingerDown) {clearTimeout(gallerySnapTimer);gallerySnapTimer=setTimeout(focusNearestGalleryCard,180);}
+}, {passive:true});
 gallery.addEventListener('focusin', () => {manualUntil = Date.now() + 8000;});
 gallery.addEventListener('click', event => {
   const card = event.target.closest('figure');
