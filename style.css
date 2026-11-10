@@ -340,13 +340,31 @@ img[src="logo-gemini-inspired.png"]{mask-image:url("logo-tail-cut.svg");mask-siz
 @media(max-width:600px){.feature-images{min-height:380px}.feature-portal{width:min(95vw,470px)}.photo-track img{width:68vw;height:62vh}}
 @media(prefers-reduced-motion:reduce){.portal-frame,.portal-core,.photo-track{animation:none!important}.portal-frame-a,.portal-frame-b,.portal-frame-c{opacity:1;transform:translate(-50%,-50%) scale(.85)}.portal-frame-b{transform:translate(-50%,-50%) scale(.65)}.portal-frame-c{transform:translate(-50%,-50%) scale(.45)}}
 .photo-track-reverse{display:none}
+.film{padding-inline:clamp(14px,3vw,48px)}
+.film-stage{width:min(1380px,100%);border-radius:18px;box-shadow:0 44px 100px #08265726,0 0 50px #79a9ed20;mask-image:linear-gradient(to right,transparent,#000 1.4%,#000 98.6%,transparent)}
 @media(max-width:600px){
   .dial-stage{touch-action:pan-y}
   .photo-strip{display:flex;flex-direction:column;justify-content:center;min-height:100svh}
-  .photo-track,.photo-track-reverse{display:flex;height:50svh;min-height:0;gap:18px;animation-duration:58s}
+  .photo-track,.photo-track-reverse{display:flex;height:50svh;min-height:0;gap:18px;animation-name:smileLoopMobile;animation-duration:58s}
   .photo-track-reverse{animation-direction:reverse}
-  .photo-track img{width:42vw;height:37svh;flex:none}
+  .photo-track img{width:35vw;height:32svh;flex:none}
+  .photo-track .desktop-portrait{display:none}
+  .film{padding-inline:8px}
+  .film-stage{width:100%;border-radius:10px}
 }
+@media(min-width:601px) and (max-width:1000px) and (pointer:coarse){
+  .film{padding-inline:3vw}
+  .film-stage{width:100%}
+  .gallery figure{flex-basis:39vw}
+  .gallery img{height:56vw}
+  .photo-strip{display:flex;flex-direction:column;justify-content:center;min-height:100svh}
+  .photo-track,.photo-track-reverse{display:flex;height:50svh;min-height:0;gap:20px;animation-name:smileLoopFold;animation-duration:58s}
+  .photo-track-reverse{animation-direction:reverse}
+  .photo-track img{width:26vw;height:35svh;flex:none}
+  .photo-track .desktop-portrait{display:none}
+}
+@keyframes smileLoopMobile{to{transform:translateX(calc(-50% - 9px))}}
+@keyframes smileLoopFold{to{transform:translateX(calc(-50% - 10px))}}
 
 /* Anchor the cover mark to the mobile content width and keep it clear of the headline. */
 @media(max-width:600px){
